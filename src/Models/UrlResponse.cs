@@ -1,4 +1,4 @@
-namespace UrlShortener.Models
+namespace src.Models
 {
     public class UrlResponse
     {

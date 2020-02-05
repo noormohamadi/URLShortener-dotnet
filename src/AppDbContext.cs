@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using UrlShortener.Models;
+using src.Models;
 
 namespace src
 {
