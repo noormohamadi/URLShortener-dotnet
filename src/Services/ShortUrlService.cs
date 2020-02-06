@@ -23,10 +23,21 @@ namespace src.Services
                 check = dbContext.UrlResources.AnyAsync(foo => foo.ShortenUrl == shortUrl);
                 check.Wait();
             } while(check.Result);
-            return new UrlResource{
+            UrlResource resource = new UrlResource
+            {
                 ShortenUrl = shortUrl,
                 Url = urlRequest.Url
             };
+            var add = dbContext.UrlResources.AddAsync(resource);
+            return resource;
+        }
+        public string UrlFinder(string shortUrl)
+        {
+            Task<UrlResource> find = dbContext.UrlResources.Where(resource => resource.ShortenUrl == shortUrl)
+                .FirstOrDefaultAsync<UrlResource>();
+            find.Wait();
+            string url = find.Result.Url;
+            return url;
         }
     }
 }
