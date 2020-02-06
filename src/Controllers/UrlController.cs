@@ -7,12 +7,12 @@ using src.Models;
 
 namespace src.Controllers
 {
-    [Route("/")]
+    [Route("")]
     [ApiController]
     public class UrlController : ControllerBase
     {
-        private readonly ShortUrlService shortUrlService;
-        public UrlController(ShortUrlService shortUrlService)
+        private readonly IShortUrlService shortUrlService;
+        public UrlController(IShortUrlService shortUrlService)
         {
             this.shortUrlService = shortUrlService;
         }

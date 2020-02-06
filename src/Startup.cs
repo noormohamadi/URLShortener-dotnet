@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using Microsoft.EntityFrameworkCore;
+using src.Services;
 
 namespace src
 {
@@ -29,7 +30,8 @@ namespace src
         {
             services.AddDbContext<AppDbContext>(opts =>
                 opts.UseNpgsql(Configuration["ConnectionStrings:url"]));
-
+    
+            services.AddScoped<IShortUrlService, ShortUrlService>();
             services.AddControllers();
         }
 

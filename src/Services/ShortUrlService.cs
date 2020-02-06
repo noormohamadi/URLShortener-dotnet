@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace src.Services
 {
-    public class ShortUrlService
+    public class ShortUrlService : IShortUrlService
     {
         private readonly AppDbContext dbContext;
         public ShortUrlService(AppDbContext dbContext)
@@ -28,7 +28,8 @@ namespace src.Services
                 ShortenUrl = shortUrl,
                 Url = urlRequest.Url
             };
-            var add = dbContext.UrlResources.AddAsync(resource);
+            dbContext.UrlResources.Add(resource);
+            dbContext.SaveChanges();
             return resource;
         }
         public string UrlFinder(string shortUrl)
