@@ -6,6 +6,7 @@ namespace src
     public class AppDbContext : DbContext
     {
         public DbSet<UrlResource> UrlResources { get; set; }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<UrlResource>().ToTable("url");
