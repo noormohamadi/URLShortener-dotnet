@@ -17,16 +17,23 @@ namespace src.Controllers
             this.shortUrlService = shortUrlService;
         }
         [HttpGet("Redirect/{shortUrl}")]
-        public RedirectResult Get(string shortUrl)
+        public IActionResult Get(string shortUrl)
         {
             string url = shortUrlService.UrlFinder(shortUrl);
-            return Redirect(url);
+            if(url != null)
+            {
+                return Redirect(url);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
         [HttpPost("urls")]
-        public UrlResource post(UrlRequest request)
+        public IActionResult post([FromBody]UrlRequest request)
         {
             UrlResource resource = shortUrlService.GenerateShortUrl(request);
-            return resource;
+            return Ok(resource);
         }
     }
 }

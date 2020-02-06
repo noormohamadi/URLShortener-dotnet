@@ -34,10 +34,16 @@ namespace src.Services
         }
         public string UrlFinder(string shortUrl)
         {
-            Task<UrlResource> find = dbContext.UrlResources.Where(resource => resource.ShortenUrl == shortUrl)
-                .FirstOrDefaultAsync<UrlResource>();
-            find.Wait();
-            string url = find.Result.Url;
+            string url = null;
+            Task<bool> check = dbContext.UrlResources.AnyAsync(foo => foo.ShortenUrl == shortUrl);
+            check.Wait();
+            if (check.Result)
+            {
+                Task<UrlResource> find = dbContext.UrlResources.Where(resource => resource.ShortenUrl == shortUrl)
+                    .FirstOrDefaultAsync<UrlResource>();
+                find.Wait();
+                url = find.Result.Url;
+            }
             return url;
         }
     }
