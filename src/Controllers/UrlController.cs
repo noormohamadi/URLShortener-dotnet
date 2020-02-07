@@ -26,14 +26,21 @@ namespace src.Controllers
             }
             else
             {
-                return NotFound();
+                return NotFound(shortUrl + " is not a valid shorten url!");
             }
         }
         [HttpPost("urls")]
         public IActionResult post([FromBody]UrlRequest request)
         {
             UrlResource resource = shortUrlService.GenerateShortUrl(request);
-            return Ok(resource);
+            if(resource == null)
+            {
+                return BadRequest(request.Url + " is not a valid url!");
+            }
+            else
+            {
+                return Ok(resource);
+            }
         }
     }
 }

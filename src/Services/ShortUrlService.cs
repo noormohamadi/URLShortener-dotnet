@@ -15,22 +15,29 @@ namespace src.Services
         }
         public UrlResource GenerateShortUrl(UrlRequest urlRequest)
         {
-            string shortUrl;
-            Task<bool> check;
-            do
+            if(Validator.UrlValidator(urlRequest.Url))
             {
-                shortUrl = RandomStringGenerator.GeneratRandomString(8);
-                check = dbContext.UrlResources.AnyAsync(foo => foo.ShortenUrl == shortUrl);
-                check.Wait();
-            } while(check.Result);
-            UrlResource resource = new UrlResource
+                string shortUrl;
+                Task<bool> check;
+                do
+                {
+                    shortUrl = RandomStringGenerator.GeneratRandomString(8);
+                    check = dbContext.UrlResources.AnyAsync(foo => foo.ShortenUrl == shortUrl);
+                    check.Wait();
+                } while(check.Result);
+                UrlResource resource = new UrlResource
+                {
+                    ShortenUrl = shortUrl,
+                    Url = urlRequest.Url
+                };
+                dbContext.UrlResources.Add(resource);
+                dbContext.SaveChanges();
+                return resource;
+            }
+            else
             {
-                ShortenUrl = shortUrl,
-                Url = urlRequest.Url
-            };
-            dbContext.UrlResources.Add(resource);
-            dbContext.SaveChanges();
-            return resource;
+                return null;
+            }
         }
         public string UrlFinder(string shortUrl)
         {
