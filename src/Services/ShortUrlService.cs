@@ -3,6 +3,7 @@ using System.Linq;
 using src.Services.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using System;
 
 namespace src.Services
 {
@@ -42,14 +43,11 @@ namespace src.Services
         public string UrlFinder(string shortUrl)
         {
             string url = null;
-            Task<bool> check = dbContext.UrlResources.AnyAsync(foo => foo.ShortenUrl == shortUrl);
-            check.Wait();
-            if (check.Result)
+            bool check = dbContext.UrlResources.Any(foo => foo.ShortenUrl == shortUrl);
+            if (check)
             {
-                Task<UrlResource> find = dbContext.UrlResources.Where(resource => resource.ShortenUrl == shortUrl)
-                    .FirstOrDefaultAsync<UrlResource>();
-                find.Wait();
-                url = find.Result.Url;
+                UrlResource find = dbContext.UrlResources.Where(resource => resource.ShortenUrl == shortUrl).Single();
+                url = find.Url;
             }
             return url;
         }
