@@ -21,34 +21,34 @@ namespace src.Controllers
         [HttpGet("Redirect/{shortUrl}")]
         public IActionResult Get(string shortUrl)
         {
-            if(shortUrl.Length != 8)
+            if (shortUrl.Length != 8)
             {
-                return BadRequest(shortUrl + " is not a valid shorten url!");
+                return BadRequest();
             }
             else
             {
                 string url = shortUrlService.UrlFinder(shortUrl);
-                if(url != null)
+                if (url != null)
                 {
                     return Redirect(HttpUtility.UrlPathEncode(url));
                 }
                 else
                 {
-                    return NotFound(shortUrl + " is not a valid shorten url!");
+                    return NotFound();
                 }
             }
         }
         [HttpPost("urls")]
         public IActionResult post([FromBody]UrlRequest request)
         {
-            if(! new Regex(@"((\w)+\:\/\/)").IsMatch(request.Url))
+            if (!new Regex(@"((\w)+\:\/\/)").IsMatch(request.Url))
             {
                 request.Url = "http://" + request.Url;
             }
             UrlResource resource = shortUrlService.GenerateShortUrl(request);
-            if(resource == null)
+            if (resource == null)
             {
-                return BadRequest(request.Url + " is not a valid url!");
+                return BadRequest();
             }
             else
             {
