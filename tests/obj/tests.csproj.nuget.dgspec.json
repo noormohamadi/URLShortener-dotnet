@@ -40,6 +40,10 @@
               "target": "Package",
               "version": "[16.2.0, )"
             },
+            "RestAssured": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
             "coverlet.collector": {
               "target": "Package",
               "version": "[1.0.1, )"
